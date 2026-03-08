@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHL Workflow Content — Emails, SMS & WhatsApp</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root,
+        [data-theme="light"] {
+            --bg: #f8f9fc;
+            --surface: #fff;
+            --surface2: #f0f2f7;
+            --border: #e2e5f0;
+            --text: #1a1d28;
+            --text-muted: #5b6078;
+            --accent-blue: #2563eb;
+            --accent-green: #16a34a;
+            --accent-red: #dc2626;
+            --accent-yellow: #ca8a04;
+            --accent-purple: #7c3aed;
+            --accent-orange: #ea580c;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --badge-blue-bg: rgba(59, 130, 246, 0.1);
+            --badge-blue-text: #2563eb;
+            --badge-green-bg: rgba(34, 197, 94, 0.1);
+            --badge-green-text: #16a34a;
+            --badge-purple-bg: rgba(124, 58, 237, 0.1);
+            --badge-purple-text: #7c3aed;
+            --badge-orange-bg: rgba(249, 115, 22, 0.1);
+            --badge-orange-text: #ea580c;
+            --badge-gray-bg: rgba(107, 114, 128, 0.1);
+            --badge-gray-text: #6b7280;
+            --badge-red-bg: rgba(239, 68, 68, 0.1);
+            --badge-red-text: #dc2626;
+            --alert-info-bg: rgba(59, 130, 246, 0.06);
+            --alert-info-text: #1e40af;
+            --alert-warning-bg: rgba(234, 179, 8, 0.08);
+            --alert-warning-text: #92400e
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f1117;
+            --surface: #1a1d28;
+            --surface2: #232738;
+            --border: #2d3148;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa8;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-yellow: #eab308;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --badge-blue-bg: rgba(59, 130, 246, 0.15);
+            --badge-blue-text: #93c5fd;
+            --badge-green-bg: rgba(34, 197, 94, 0.15);
+            --badge-green-text: #86efac;
+            --badge-purple-bg: rgba(124, 58, 237, 0.15);
+            --badge-purple-text: #c4b5fd;
+            --badge-orange-bg: rgba(249, 115, 22, 0.15);
+            --badge-orange-text: #fdba74;
+            --badge-gray-bg: rgba(107, 114, 128, 0.2);
+            --badge-gray-text: #9ca3af;
+            --badge-red-bg: rgba(239, 68, 68, 0.15);
+            --badge-red-text: #fca5a5;
+            --alert-info-bg: rgba(59, 130, 246, 0.08);
+            --alert-info-text: #93c5fd;
+            --alert-warning-bg: rgba(234, 179, 8, 0.08);
+            --alert-warning-text: #fde68a
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            transition: background .3s, color .3s
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: .5rem
+        }
+
+        .theme-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: .5rem;
+            cursor: pointer;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            box-shadow: var(--shadow);
+            transition: all .2s;
+            flex-shrink: 0
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface2)
+        }
+
+        .theme-toggle .lucide {
+            width: 20px;
+            height: 20px
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: .3rem
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text);
+            font-weight: 500;
+            margin-bottom: .3rem
+        }
+
+        .meta {
+            color: var(--text-muted);
+            font-size: .88rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-blue);
+            box-shadow: var(--shadow)
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: .5rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: .5rem
+        }
+
+        h2 .lucide {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0
+        }
+
+        .wf-header {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            margin: 1.5rem 0 .8rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow)
+        }
+
+        .wf-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: .4rem
+        }
+
+        .wf-header h3 .lucide {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0
+        }
+
+        .wf-header .wf-meta {
+            font-size: .82rem;
+            color: var(--text-muted);
+            margin-top: .3rem
+        }
+
+        .content-card {
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 1.2rem 1.4rem;
+            margin: .6rem 0;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative
+        }
+
+        .content-card:hover {
+            border-color: var(--accent-blue)
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            margin-bottom: .8rem;
+            flex-wrap: wrap
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .25rem;
+            padding: .15rem .55rem;
+            border-radius: 6px;
+            font-size: .75rem;
+            font-weight: 600
+        }
+
+        .badge .lucide {
+            width: 12px;
+            height: 12px
+        }
+
+        .badge-email {
+            background: var(--badge-blue-bg);
+            color: var(--badge-blue-text)
+        }
+
+        .badge-sms {
+            background: var(--badge-green-bg);
+            color: var(--badge-green-text)
+        }
+
+        .badge-whatsapp {
+            background: var(--badge-green-bg);
+            color: var(--badge-green-text)
+        }
+
+        .badge-internal {
+            background: var(--badge-orange-bg);
+            color: var(--badge-orange-text)
+        }
+
+        .badge-template {
+            background: var(--badge-purple-bg);
+            color: var(--badge-purple-text)
+        }
+
+        .step-name {
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--text)
+        }
+
+        .field {
+            margin-bottom: .4rem;
+            font-size: .85rem
+        }
+
+        .field-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 70px;
+            display: inline-block
+        }
+
+        .field-value {
+            color: var(--text)
+        }
+
+        .body-content {
+            background: var(--surface2);
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            margin-top: .6rem;
+            font-size: .88rem;
+            color: var(--text);
+            white-space: pre-wrap;
+            line-height: 1.6;
+            border: 1px solid var(--border)
+        }
+
+        .body-label {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-bottom: .3rem
+        }
+
+        .attachment {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            background: var(--badge-gray-bg);
+            color: var(--badge-gray-text);
+            padding: .2rem .5rem;
+            border-radius: 5px;
+            font-size: .78rem;
+            margin: .15rem .2rem .15rem 0
+        }
+
+        .attachment .lucide {
+            width: 12px;
+            height: 12px
+        }
+
+        .toc {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow)
+        }
+
+        .toc h3 {
+            color: var(--text);
+            margin: 0 0 .5rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: .4rem
+        }
+
+        .toc h3 .lucide {
+            width: 16px;
+            height: 16px
+        }
+
+        .toc ol {
+            padding-left: 1.5rem;
+            font-size: .9rem
+        }
+
+        .toc li {
+            margin: .3rem 0
+        }
+
+        .toc a {
+            color: var(--accent-blue);
+            text-decoration: none
+        }
+
+        .toc a:hover {
+            text-decoration: underline
+        }
+
+        .alert {
+            padding: .8rem 1rem;
+            border-radius: 8px;
+            margin: .8rem 0;
+            font-size: .85rem;
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem
+        }
+
+        .alert .lucide {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-top: 2px
+        }
+
+        .alert-info {
+            background: var(--alert-info-bg);
+            border-left: 3px solid var(--accent-blue);
+            color: var(--alert-info-text)
+        }
+
+        .alert-warning {
+            background: var(--alert-warning-bg);
+            border-left: 3px solid var(--accent-yellow);
+            color: var(--alert-warning-text)
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1.5rem 0
+        }
+
+        .counter {
+            font-size: .78rem;
+            background: var(--badge-blue-bg);
+            color: var(--badge-blue-text);
+            padding: .1rem .4rem;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: .4rem
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #1a1a1a
+            }
+
+            .theme-toggle {
+                display: none
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div>
+            <h1>Workflow Creative Content</h1>
+            <p class="subtitle">All Emails, SMS & WhatsApp Messages</p>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" id="themeBtn">
+            <i data-lucide="moon"></i>
+        </button>
+    </div>
+
+    <div class="meta">
+        <strong>Purpose:</strong> Editable reference of all creative content from GHL workflows &nbsp;|&nbsp;
+        <strong>Total:</strong> 26 content pieces across 3 workflows &nbsp;|&nbsp;
+        <strong>Date:</strong> March 2, 2026
+    </div>
+
+    <div class="toc">
+        <h3><i data-lucide="list"></i> Contents</h3>
+        <ol>
+            <li><a href="#wf1">DRM 2025 — Form Submitted – Follow Up Sequences</a> <span class="counter">9</span></li>
+            <li><a href="#wf2">DRM 2025 — Submit Lead Email Flow (Case Study Drip)</a> <span class="counter">9</span>
+            </li>
+            <li><a href="#wf3">DRM 2025 — Appointment Reminders</a> <span class="counter">8</span></li>
+                                </ol>
+    </div>
+
+    <div class="alert alert-info">
+        <i data-lucide="info"></i>
+        <div><strong>Note:</strong> The 2 Facebook Lead → Pipeline workflows contain no creative content (they only
+            create opportunities). The Submit Lead Email Flow uses GHL Email Templates — the subject lines, attachments,
+            and template IDs are listed but the email body HTML is stored in GHL's template builder, not in the workflow
+            export.</div>
+    </div>
+
+    <!-- ===================== WF1 ===================== -->
+    <h2 id="wf1"><i data-lucide="workflow"></i> 1. DRM 2025 — Form Submitted – Follow Up Sequences</h2>
+
+    <div class="wf-header">
+        <h3><i data-lucide="zap"></i> Trigger: Google Ads Offer 2025 Form Submitted (×2 forms)</h3>
+        <div class="wf-meta">Brand: DRM 2025 &nbsp;|&nbsp; 9 content pieces &nbsp;|&nbsp; Channels: Email, SMS, WhatsApp
+        </div>
+    </div>
+
+    <!-- WF1-1 -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-internal"><i data-lucide="bell"></i> Internal Email</span>
+            <span class="step-name">Internal Notification to Dan</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">New Dan Roberts Marketing
+                Call Booked</span></div>
+        <div class="field"><span class="field-label">To:</span> <span
+                class="field-value">daniel.roberts1018@gmail.com</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content">{{contact.name}}
+
+            {{contact.email}}
+
+            {{contact.phone}}
+
+            {{contact.what_is_your_business_name}}
+            Website - {{contact.what_is_your_website_url}}
+            When are you looking to start scaling with Google Ads? -
+            {{contact.when_are_you_looking_to_start_scaling_with_google_ads}}
+            Are you the decision-maker for marketing budgets? -
+            {{contact.are_you_the_decision_maker_for_marketing_budgets}}
+            What is your current average monthly revenue? - {{contact.what_is_your_current_average_monthly_revenue}}
+
+            Are you currently running Google Ads? - {{contact.are_you_currently_running_google_ads}}
+            If yes, what is your average monthly ad spend? - {{contact.if_yes_what_is_your_average_monthly_ad_spend}}
+            Have you worked with an agency before? - {{contact.have_you_worked_with_an_agency_before}}</div>
+    </div>
+
+    <!-- WF1-2 -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="step-name">Confirmation Email</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">You're in,
+                {{contact.first_name}} — here's what happens next</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            Your Discovery Session is booked 🎉
+
+            We'll share our exact scaling strategies that have enabled us to scale brands just like yours consistently.
+            We will also give you a full marketing audit to see where the leaks are too.
+
+            Excited to dive in,
+
+            — Danny</div>
+    </div>
+
+    <!-- WF1-3 -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-sms"><i data-lucide="smartphone"></i> SMS</span>
+            <span class="step-name">Confirmation SMS</span>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}}, Dan here just messaging to say your Discovery Session is
+            booked 🎉
+
+            We'll share our exact scaling strategies that have enabled us to scale brands just like yours consistently.
+            We will also give you a full marketing audit to see where the leaks are too.
+
+            Excited to dive in,</div>
+    </div>
+
+    <!-- WF1-4 -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WhatsApp</span>
+            <span class="step-name">Confirmation WhatsApp</span>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            Your Discovery Session is booked 🎉
+
+            We'll share our exact scaling strategies that have enabled us to scale brands just like yours consistently.
+            We will also give you a full marketing audit to see where the leaks are too.
+
+            Excited to dive in,
+
+            — Danny</div>
+    </div>
+
+    <!-- WF1-5 -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WhatsApp</span>
+            <span class="step-name">Follow-up WhatsApp (Video Testimonial)</span>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            Most agencies talk. We prefer to show.
+
+            We will reveal our exact systems and strategies that have scaled brands over the last 10 years. We will also
+            give you a full marketing audit to see where the leaks are too.
+
+            Heres a video from one of our current clients with some advice directly for you.
+            https://youtube.com/shorts/BTCcSWz5OYI
+
+            — Danny</div>
+    </div>
+
+    <!-- WF1-6,7,8 -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="step-name">Follow-up Email (Video) — sent if WhatsApp undelivered</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">Before your session —
+                watch this</span></div>
+        <div class="field"><span class="field-label">Note:</span> <span class="field-value">Same content sent via 3
+                different branches (WA delivered → WA undelivered → fallback). All have identical body.</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            Most agencies talk. We prefer to show.
+
+            We will reveal our exact systems and strategies that have scaled brands over the last 10 years. We will also
+            give you a full marketing audit to see where the leaks are too.
+
+            Heres a video from one of our current clients with some advice directly for you.
+            https://youtube.com/shorts/BTCcSWz5OYI
+
+            — Danny</div>
+    </div>
+
+    <!-- WF1-9 -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-sms"><i data-lucide="smartphone"></i> SMS</span>
+            <span class="step-name">Follow-up SMS (Video) — fallback branch</span>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            Most agencies talk. We prefer to show.
+
+            We will reveal our exact systems and strategies that have scaled brands over the last 10 years. We will also
+            give you a full marketing audit to see where the leaks are too.
+
+            Heres a video from one of our current clients with some advice directly for you.
+            https://youtube.com/shorts/BTCcSWz5OYI
+
+            — Danny</div>
+    </div>
+
+    <!-- ===================== WF2 ===================== -->
+    <h2 id="wf2"><i data-lucide="workflow"></i> 2. DRM 2025 — Submit Lead Email Flow (Case Study Drip)</h2>
+
+    <div class="wf-header">
+        <h3><i data-lucide="zap"></i> Trigger: Opportunity Created in DRM 2025 – Lead Pipeline</h3>
+        <div class="wf-meta">Brand: DRM 2025 &nbsp;|&nbsp; 9 emails (template-based) &nbsp;|&nbsp; From: Danny
+            &lt;Dan@danrobertsmarketing.co.uk&gt;</div>
+    </div>
+
+    <div class="alert alert-warning">
+        <i data-lucide="alert-triangle"></i>
+        <div><strong>Template-based emails:</strong> These emails use GHL Email Templates. The body content is stored in
+            GHL's template builder (not in the workflow JSON). To edit the content, go to <strong>Marketing → Emails →
+                Templates</strong> in GHL and search by template ID or name.</div>
+    </div>
+
+    <!-- WF2 emails -->
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 1 — Candles by Luma (Send 1)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">How we increased Candles
+                By Luma's revenue by 223% in 4 months</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a0eae2762659882f306</code></span></div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i
+                    data-lucide="paperclip"></i> Case-Study-Candles-by-Luma (2).pdf</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content">[Content stored in GHL Email Template — edit in Marketing → Templates]</div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 1 — Candles by Luma (Resend / Send 2)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">We boosted this brands
+                revenue by 223% in just 4 months, heres how.</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393c2ead7f08b67e2ca0b2</code> (different template from Send 1)</span></div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i
+                    data-lucide="paperclip"></i> Case-Study-Candles-by-Luma (2).pdf</span></div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 2 — Larosa Jewellery (Send 1)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">Here's how we boosted his
+                jewellery brands revenue by 194%.</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a462ef50d360d8b5f2d</code></span></div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i
+                    data-lucide="paperclip"></i> Case-Study-Larosa-Jewellery (1).pdf</span></div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 2 — Larosa Jewellery (Resend / Send 2)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">Jewellery brand's revenue
+                doubled in 8 months, heres how we did it.</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a462ef50d360d8b5f2d</code> (same template, different subject)</span>
+        </div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i
+                    data-lucide="paperclip"></i> Case-Study-Larosa-Jewellery (1).pdf</span></div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 3 — Nest Pets (Send 1)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">From £64,100 -> £129,000
+                in less than 4 months, here's how we did it.</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a4c249bc00a1ce68563</code></span></div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i
+                    data-lucide="paperclip"></i> Case-Study-Nest-Pets (1).pdf</span></div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 3 — Nest Pets (Resend / Send 2)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">We boosted this pet
+                brands revenue by 98% in less than 3 months, heres how.</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a4c249bc00a1ce68563</code> (same template, different subject)</span>
+        </div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i
+                    data-lucide="paperclip"></i> Case-Study-Nest-Pets (1).pdf</span></div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 4 — Universal Framework</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">Doubling brands revenue
+                whilst reducing acquisition costs, here's how.</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a5027b5eeeb8e88090e</code></span></div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 5 — What Holds Google Ads Back</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">What Usually Holds Google
+                Ads Back (and How We Fix It Consistently)</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a55e26e09301164a5ea</code></span></div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-template"><i data-lucide="file-text"></i> Email Template</span>
+            <span class="step-name">Email 6 — Strategy Session CTA (Final)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">Let's Map Out Your Growth
+                Strategy</span></div>
+        <div class="field"><span class="field-label">Template:</span> <span
+                class="field-value"><code>69393a59ad7f0882d52c913a</code></span></div>
+    </div>
+
+    <!-- ===================== WF3 ===================== -->
+    <h2 id="wf3"><i data-lucide="workflow"></i> 3. DRM 2025 — Appointment Reminders</h2>
+
+    <div class="wf-header">
+        <h3><i data-lucide="zap"></i> Trigger: Customer Booked on Google Ads Discovery Call calendar</h3>
+        <div class="wf-meta">Brand: DRM 2025 &nbsp;|&nbsp; 8 content pieces &nbsp;|&nbsp; Calendar ID:
+            dLs1xV6HPO7gXTwBlL87</div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="badge badge-sms"><i data-lucide="smartphone"></i> SMS</span>
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WhatsApp</span>
+            <span class="step-name">Booking Confirmation (sent on all 3 channels — identical)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">DRM - Booked Call, video
+                inside for you</span></div>
+        <div class="field"><span class="field-label">Timing:</span> <span class="field-value">5 minutes after
+                booking</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            I recorded this video for you ahead of our call
+
+            https://streamable.com/qttd6v
+
+            Expect a call from either +44 7438 241646 or
+
+            +44 7533 474640. Save these numbers so you don't miss it.
+
+            Looking forward to chatting,
+
+            Danny</div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WhatsApp</span>
+            <span class="step-name">1-Day-Before Reminder (Email + WhatsApp — identical)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">Our session is
+                tomorrow</span></div>
+        <div class="field"><span class="field-label">Timing:</span> <span class="field-value">1 day before
+                appointment</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            Your Discovery Session is tomorrow, I am looking forward to getting to know your business and to see if we
+            can help!
+
+            Here is the link to the meeting - {{appointment.meeting_location}}
+
+            To make the most of our time, try to be in a quiet place with good WIFI.
+
+            See you tomorrow,
+
+            Danny</div>
+    </div>
+
+    <div class="content-card">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="badge badge-sms"><i data-lucide="smartphone"></i> SMS</span>
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WhatsApp</span>
+            <span class="step-name">30-Min-Before Reminder (all 3 channels — identical)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value">{{contact.first_name}},
+                your session starts in 1 hour</span></div>
+        <div class="field"><span class="field-label">Timing:</span> <span class="field-value">30 minutes before
+                appointment</span></div>
+        <div class="alert alert-warning"><i data-lucide="alert-triangle"></i>
+            <div><strong>Typo:</strong> "ahed" should be "ahead". Also, subject says "1 hour" but timing is 30 minutes.
+            </div>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content">Hey {{contact.first_name}},
+
+            In 30 mins, we go live.
+
+            I recorded this video for you ahed of our call
+
+            https://streamable.com/wb6bj8
+
+            Here is the link to the meeting - {{appointment.meeting_location}}
+
+            Danny</div>
+    </div>
+
+
+
+    <div class="alert alert-info">
+        <i data-lucide="info"></i>
+        <div><strong>Summary of issues found in content:</strong>
+            <br>• "ahed" typo → should be "ahead" (DRM Appointment Reminders, 30-min reminder)
+            <br>• Subject says "1 hour" but reminder fires at 30 minutes (DRM Appointment Reminders)
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() { const c = document.documentElement.getAttribute('data-theme'); const n = c === 'dark' ? 'light' : 'dark'; document.documentElement.setAttribute('data-theme', n); localStorage.setItem('theme', n); const b = document.getElementById('themeBtn'); b.innerHTML = n === 'dark' ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>'; lucide.createIcons({ nodes: [b] }) }
+        document.addEventListener('DOMContentLoaded', () => { const s = localStorage.getItem('theme') || 'light'; document.documentElement.setAttribute('data-theme', s); const b = document.getElementById('themeBtn'); b.innerHTML = s === 'dark' ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>'; lucide.createIcons() });
+    </script>
+
+</body>
+
+</html>

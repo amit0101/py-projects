@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHL Subaccount Analysis — DRM 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root,
+        [data-theme="light"] {
+            --bg: #f8f9fc;
+            --surface: #ffffff;
+            --surface2: #f0f2f7;
+            --border: #e2e5f0;
+            --text: #1a1d28;
+            --text-muted: #5b6078;
+            --accent-blue: #2563eb;
+            --accent-green: #16a34a;
+            --accent-red: #dc2626;
+            --accent-yellow: #ca8a04;
+            --accent-orange: #ea580c;
+            --accent-purple: #7c3aed;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.03);
+            --alert-warning-bg: rgba(234, 179, 8, 0.08);
+            --alert-warning-text: #92400e;
+            --alert-danger-bg: rgba(239, 68, 68, 0.06);
+            --alert-danger-text: #991b1b;
+            --alert-info-bg: rgba(59, 130, 246, 0.06);
+            --alert-info-text: #1e40af;
+            --alert-success-bg: rgba(34, 197, 94, 0.06);
+            --alert-success-text: #166534;
+            --badge-red-bg: rgba(239, 68, 68, 0.1);
+            --badge-red-text: #dc2626;
+            --badge-yellow-bg: rgba(234, 179, 8, 0.1);
+            --badge-yellow-text: #a16207;
+            --badge-green-bg: rgba(34, 197, 94, 0.1);
+            --badge-green-text: #16a34a;
+            --badge-blue-bg: rgba(59, 130, 246, 0.1);
+            --badge-blue-text: #2563eb;
+            --badge-gray-bg: rgba(107, 114, 128, 0.1);
+            --badge-gray-text: #6b7280;
+            --badge-orange-bg: rgba(234, 88, 12, 0.1);
+            --badge-orange-text: #ea580c;
+            --badge-purple-bg: rgba(124, 58, 237, 0.1);
+            --badge-purple-text: #7c3aed;
+            --mermaid-theme: default;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f1117;
+            --surface: #1a1d28;
+            --surface2: #232738;
+            --border: #2d3148;
+            --text: #e2e4ed;
+            --text-muted: #8b8fa8;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-yellow: #eab308;
+            --accent-orange: #f97316;
+            --accent-purple: #a855f7;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
+            --alert-warning-bg: rgba(234, 179, 8, 0.08);
+            --alert-warning-text: #fde68a;
+            --alert-danger-bg: rgba(239, 68, 68, 0.08);
+            --alert-danger-text: #fca5a5;
+            --alert-info-bg: rgba(59, 130, 246, 0.08);
+            --alert-info-text: #93c5fd;
+            --alert-success-bg: rgba(34, 197, 94, 0.08);
+            --alert-success-text: #86efac;
+            --badge-red-bg: rgba(239, 68, 68, 0.15);
+            --badge-red-text: #fca5a5;
+            --badge-yellow-bg: rgba(234, 179, 8, 0.15);
+            --badge-yellow-text: #fde68a;
+            --badge-green-bg: rgba(34, 197, 94, 0.15);
+            --badge-green-text: #86efac;
+            --badge-blue-bg: rgba(59, 130, 246, 0.15);
+            --badge-blue-text: #93c5fd;
+            --badge-gray-bg: rgba(107, 114, 128, 0.2);
+            --badge-gray-text: #9ca3af;
+            --badge-orange-bg: rgba(249, 115, 22, 0.15);
+            --badge-orange-text: #fdba74;
+            --badge-purple-bg: rgba(168, 85, 247, 0.15);
+            --badge-purple-text: #c4b5fd;
+            --mermaid-theme: dark;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-toggle {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.5rem;
+            cursor: pointer;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface2);
+            box-shadow: var(--shadow-md);
+        }
+
+        .theme-toggle .lucide {
+            width: 20px;
+            height: 20px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h2 .lucide {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--accent-purple);
+            margin: 1.8rem 0 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        h3 .lucide {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        p {
+            margin-bottom: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .meta {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding: 1rem 1.2rem;
+            background: var(--surface);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-blue);
+            box-shadow: var(--shadow);
+        }
+
+        .toc {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .toc h3 {
+            color: var(--text);
+            margin-top: 0;
+        }
+
+        .toc ol {
+            padding-left: 1.5rem;
+        }
+
+        .toc li {
+            margin: 0.4rem 0;
+        }
+
+        .toc a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0 1.5rem;
+            font-size: 0.88rem;
+        }
+
+        th {
+            background: var(--surface2);
+            color: var(--accent-blue);
+            font-weight: 600;
+            text-align: left;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            vertical-align: top;
+        }
+
+        tr:hover td {
+            background: var(--surface);
+        }
+
+        .chart-container {
+            background: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 1.2rem 0;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .chart-container .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+
+        .alert {
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .alert .lucide {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-warning {
+            background: var(--alert-warning-bg);
+            border-left: 4px solid var(--accent-yellow);
+            color: var(--alert-warning-text);
+        }
+
+        .alert-danger {
+            background: var(--alert-danger-bg);
+            border-left: 4px solid var(--accent-red);
+            color: var(--alert-danger-text);
+        }
+
+        .alert-info {
+            background: var(--alert-info-bg);
+            border-left: 4px solid var(--accent-blue);
+            color: var(--alert-info-text);
+        }
+
+        .alert-success {
+            background: var(--alert-success-bg);
+            border-left: 4px solid var(--accent-green);
+            color: var(--alert-success-text);
+        }
+
+        .alert strong {
+            color: inherit;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.15rem 0.55rem;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .badge-red {
+            background: var(--badge-red-bg);
+            color: var(--badge-red-text);
+        }
+
+        .badge-yellow {
+            background: var(--badge-yellow-bg);
+            color: var(--badge-yellow-text);
+        }
+
+        .badge-green {
+            background: var(--badge-green-bg);
+            color: var(--badge-green-text);
+        }
+
+        .badge-blue {
+            background: var(--badge-blue-bg);
+            color: var(--badge-blue-text);
+        }
+
+        .badge-gray {
+            background: var(--badge-gray-bg);
+            color: var(--badge-gray-text);
+        }
+
+        code {
+            background: var(--surface2);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--accent-purple);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .step-card {
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 1.2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .step-card h4 {
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 0.6rem;
+        }
+
+        .step-card ul {
+            padding-left: 1.2rem;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        .step-card ul li {
+            margin: 0.3rem 0;
+        }
+
+        .step-header {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .step-header .lucide {
+            width: 15px;
+            height: 15px;
+        }
+
+        .step-header.immediate {
+            color: var(--accent-red);
+        }
+
+        .step-header.short {
+            color: var(--accent-yellow);
+        }
+
+        .step-header.medium {
+            color: var(--accent-blue);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2rem 0;
+        }
+
+
+        /* Content cards clickable */
+        .content-card { cursor: pointer; transition: all .2s; position: relative; }
+        .content-card:hover { border-color: var(--accent-blue); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .content-card::after { content: '✏️'; position: absolute; top: .8rem; right: .8rem; opacity: 0; transition: opacity .2s; font-size: .9rem; }
+        .content-card:hover::after { opacity: 1; }
+        .badge-internal { background: var(--badge-orange-bg); color: var(--badge-orange-text); }
+        .badge-email { background: var(--badge-blue-bg); color: var(--badge-blue-text); }
+        .badge-sms { background: var(--badge-green-bg); color: var(--badge-green-text); }
+        .badge-whatsapp { background: var(--badge-green-bg); color: var(--badge-green-text); }
+        .badge-template { background: var(--badge-purple-bg); color: var(--badge-purple-text); }
+        .content-card .badge { display: inline-flex; align-items: center; gap: .25rem; padding: .15rem .55rem; border-radius: 6px; font-size: .75rem; font-weight: 600; }
+        .content-card .badge .lucide { width: 12px; height: 12px; }
+        .card-header { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; flex-wrap: wrap; }
+        .step-name { font-size: .88rem; font-weight: 600; color: var(--text); }
+        .field { margin-bottom: .3rem; font-size: .85rem; }
+        .field-label { font-weight: 600; color: var(--text-muted); min-width: 70px; display: inline-block; }
+        .field-value { color: var(--text); }
+        .body-label { font-size: .75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .04em; margin-top: .5rem; margin-bottom: .2rem; }
+        .body-content { background: var(--surface2); border-radius: 8px; padding: .8rem 1rem; font-size: .85rem; color: var(--text); white-space: pre-wrap; line-height: 1.5; border: 1px solid var(--border); max-height: 120px; overflow: hidden; }
+        .content-card .attachment { display: inline-flex; align-items: center; gap: .3rem; background: var(--badge-gray-bg); color: var(--badge-gray-text); padding: .15rem .4rem; border-radius: 5px; font-size: .78rem; }
+        .content-card .attachment .lucide { width: 12px; height: 12px; }
+        .dl-btn { float: right; background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; border: none; padding: .4rem 1rem; border-radius: 8px; font-size: .82rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: .35rem; transition: all .2s; font-family: inherit; }
+        .dl-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,99,235,.3); }
+        .dl-btn .lucide { width: 14px; height: 14px; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; padding: 1.5rem; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: var(--surface); border-radius: 16px; max-width: 700px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,.2); position: relative; animation: modalIn .2s ease; }
+        @keyframes modalIn { from { opacity: 0; transform: scale(.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-close { position: absolute; top: 1rem; right: 1rem; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all .15s; }
+        .modal-close:hover { background: var(--accent-red); color: #fff; border-color: var(--accent-red); }
+        .modal h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--text); }
+        .modal label { display: block; font-size: .82rem; font-weight: 600; color: var(--text-muted); margin: .8rem 0 .3rem; text-transform: uppercase; letter-spacing: .04em; }
+        .modal input[type="text"] { width: 100%; padding: .6rem .8rem; border: 1px solid var(--border); border-radius: 8px; font-size: .9rem; background: var(--surface2); color: var(--text); font-family: inherit; transition: border-color .2s; }
+        .modal input[type="text"]:focus { outline: none; border-color: var(--accent-blue); }
+        .modal textarea { width: 100%; min-height: 250px; padding: .8rem; border: 1px solid var(--border); border-radius: 8px; font-size: .88rem; background: var(--surface2); color: var(--text); font-family: inherit; line-height: 1.6; resize: vertical; transition: border-color .2s; }
+        .modal textarea:focus { outline: none; border-color: var(--accent-blue); }
+        .modal-save { background: linear-gradient(135deg, #16a34a, #15803d); color: #fff; border: none; padding: .6rem 1.5rem; border-radius: 8px; font-size: .9rem; font-weight: 600; cursor: pointer; margin-top: 1rem; font-family: inherit; transition: all .2s; }
+        .modal-save:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22,163,74,.3); }
+        .edited-badge { display: inline-block; background: var(--badge-green-bg); color: var(--badge-green-text); font-size: .7rem; font-weight: 700; padding: .1rem .4rem; border-radius: 4px; margin-left: .4rem; }
+
+        /* Clickable mermaid nodes */
+        .mermaid .node { cursor: pointer; }
+        .mermaid .node:hover rect, .mermaid .node:hover polygon { filter: brightness(0.92); }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #1a1a1a;
+            }
+
+            .theme-toggle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="top-bar">
+        <div>
+            <h1>GHL Subaccount Analysis</h1>
+            <p style="font-size:1.15rem; color:var(--text); margin-bottom:0.3rem; font-weight:500;">DRM 2025</p>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode" id="themeBtn">
+            <i data-lucide="moon"></i>
+        </button>
+    </div>
+
+    <div class="meta">
+        <strong>Date:</strong> March 1, 2026 &nbsp;|&nbsp;
+        <strong>Scope:</strong> 5 GHL workflows, 9 pipelines, opportunities &nbsp;|&nbsp;
+        <strong>Brand:</strong> Dan Roberts Marketing (DRM)
+    </div>
+
+    <div class="toc">
+        <h3><i data-lucide="list" style="width:18px;height:18px"></i> Contents</h3>
+        <ol>
+            <li><a href="#s1">Workflow Summary Table</a></li>
+            <li><a href="#s2">Overall Funnel Map</a></li>
+            <li><a href="#s3">DRM 2025 Funnel — Detailed Flows</a></li>
+            <li><a href="#s4">Pipeline Inventory & Audit</a></li>
+            <li><a href="#s5">Issues & Gaps Identified</a></li>
+            <li><a href="#s6">Improvement Recommendations</a></li>
+            <li><a href="#s7">Recommended Next Steps</a></li>
+        </ol>
+    </div>
+
+    <!-- ======== SECTION 1 ======== -->
+    <h2 id="s1"><i data-lucide="table-2"></i> 1. Workflow Summary Table</h2>
+
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Workflow</th>
+                    <th>Brand</th>
+                    <th>Trigger</th>
+                    <th>Key Actions</th>
+                    <th>Channels</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><strong>Facebook Lead → Pipeline</strong></td>
+                    <td><span class="badge badge-blue">DRM</span></td>
+                    <td>FB Lead Form (form 1)</td>
+                    <td>Create opportunity (open)</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><strong>FB Lead form v2 → Pipeline</strong></td>
+                    <td><span class="badge badge-blue">DRM</span></td>
+                    <td>FB Lead Form (form 2)</td>
+                    <td>Create opportunity (open)</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><strong>Form Submitted – Follow Up</strong></td>
+                    <td><span class="badge badge-blue">DRM</span></td>
+                    <td>Google Ads Offer 2025 Form (×2)</td>
+                    <td>Notify Dan → Create opp → Confirm → Follow-up (WA branching)</td>
+                    <td><i data-lucide="mail" style="width:14px;height:14px"></i> <i data-lucide="smartphone"
+                            style="width:14px;height:14px"></i> <i data-lucide="message-circle"
+                            style="width:14px;height:14px"></i></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><strong>Submit Lead Email Flow</strong></td>
+                    <td><span class="badge badge-blue">DRM</span></td>
+                    <td>Opportunity Created in DRM 2025 pipeline</td>
+                    <td>6-email case study drip, open-tracking, resend logic</td>
+                    <td><i data-lucide="mail" style="width:14px;height:14px"></i></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><strong>Appointment Reminders</strong></td>
+                    <td><span class="badge badge-blue">DRM</span></td>
+                    <td>Customer Books DRM Calendar</td>
+                    <td>Confirm + reminders at booking, -1 day, -30 min</td>
+                    <td><i data-lucide="mail" style="width:14px;height:14px"></i> <i data-lucide="smartphone"
+                            style="width:14px;height:14px"></i> <i data-lucide="message-circle"
+                            style="width:14px;height:14px"></i></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ======== SECTION 2 ======== -->
+    <h2 id="s2"><i data-lucide="git-branch"></i> 2. Overall Funnel Map</h2>
+
+    <div class="chart-container" id="chart-overall">
+        <pre class="mermaid">
+graph TB
+    subgraph DRM["DRM 2025  -  E-commerce Brand Scaling"]
+        FB1["Facebook Lead Form v1"]
+        FB2["Facebook Lead Form v2"]
+        GFORM["Google Ads Offer 2025 Form"]
+
+        FB1 -->|"WF: FB Lead -> Pipeline"| OPP_FB["Create Opportunity"]
+        FB2 -->|"WF: FB Lead v2 -> Pipeline"| OPP_FB
+
+        GFORM -->|"WF: Form Submitted"| NOTIFY_DAN["Internal Notif to Dan"]
+        NOTIFY_DAN --> OPP_DRM["Create Opportunity DRM 2025 - Lead"]
+        OPP_DRM -->|"Triggers Email Flow"| DRIP_DRM["Case Study Drip 6 emails"]
+
+        GFORM --> CONFIRM_DRM["Confirmation Email+SMS+WhatsApp"]
+        CONFIRM_DRM --> FOLLOWUP_DRM["Follow-up Video"]
+
+        BOOK_DRM["Customer Books DRM Calendar"] -->|"WF: Appointment Reminders"| REM_DRM["Reminders @ Booking, -1 Day, -30 Min"]
+    end
+</pre>
+    </div>
+
+    <!-- ======== SECTION 3 ======== -->
+    <h2 id="s3"><i data-lucide="workflow"></i> 3. DRM 2025 Funnel — Detailed Flows</h2>
+
+    <h3><i data-lucide="user-plus"></i> 3a. Lead Capture → Pipeline</h3>
+    <div class="chart-container">
+        <pre class="mermaid">
+flowchart TD
+    A["FB Lead Form v1"] -->|"WF: FB Lead -> Pipeline"| C["Create Opportunity Name: user.name  -  BUG Status: Open"]
+    B["FB Lead Form v2"] -->|"WF: FB Lead v2 -> Pipeline"| C
+    D["Google Ads Form x2"] -->|"WF: Form Submitted"| E["🔔 Notify Dan"]
+    E --> F["Create Opportunity DRM 2025 - Lead"]
+    F --> G["✉️ Confirmation Email"]
+    G --> H["📱 SMS"]
+    H --> I{"WhatsApp"}
+    I -->|"Delivered"| J["💬 2nd WhatsApp + video"]
+    I -->|"Undelivered"| K["✉️ Follow-up Email"]
+    J -->|"Delivered"| L["✉️ Pre-session Email"]
+    J -->|"Undelivered"| M["✉️ Email+SMS Fallback"]
+    F -.->|"Triggers next WF"| N["Case Study Email Drip"]
+    click E showContent "wf1-1"
+    click G showContent "wf1-2"
+    click H showContent "wf1-3"
+    click J showContent "wf1-5"
+    click K showContent "wf1-6"
+    click L showContent "wf1-6"
+    click M showContent "wf1-6"
+    click N showContent "wf-drip"
+    style G fill:#dbeafe,stroke:#2563eb,stroke-width:2
+    style H fill:#dcfce7,stroke:#16a34a,stroke-width:2
+    style J fill:#dcfce7,stroke:#16a34a,stroke-width:2
+    style K fill:#dbeafe,stroke:#2563eb,stroke-width:2
+    style L fill:#dbeafe,stroke:#2563eb,stroke-width:2
+    style M fill:#dbeafe,stroke:#2563eb,stroke-width:2
+    style E fill:#ffedd5,stroke:#ea580c,stroke-width:2
+</pre>
+    </div>
+
+    <h3><i data-lucide="mails"></i> 3b. Case Study Email Drip</h3>
+    <div class="chart-container">
+        <pre class="mermaid">
+flowchart TD
+    T["Opportunity Created"] --> W1["Wait 1 Day"]
+    W1 --> E1["✉️ Email 1: Candles by Luma"]
+    E1 --> C1{"Opened?"}
+    C1 -->|"Yes"| E2["✉️ Email 2: Larosa Jewellery"]
+    C1 -->|"No"| R1["✉️ Resend Email 1"]
+    R1 --> E2
+    E2 --> C2{"Opened?"}
+    C2 -->|"Yes"| E3["✉️ Email 3: Nest Pets"]
+    C2 -->|"No"| R2["✉️ Resend Email 2"]
+    R2 --> E3
+    E3 --> C3{"Opened?"}
+    C3 -->|"Yes"| E4["✉️ Email 4: Universal Framework"]
+    C3 -->|"No"| R3["✉️ Resend Email 3"]
+    R3 --> E4
+    E4 --> E5["✉️ Email 5: Google Ads Holdbacks"]
+    E5 --> E6["✉️ Email 6: Strategy Session CTA"]
+    click E1 showContent "wf2-1"
+    click R1 showContent "wf2-1b"
+    click E2 showContent "wf2-2"
+    click R2 showContent "wf2-2b"
+    click E3 showContent "wf2-3"
+    click R3 showContent "wf2-3b"
+    click E4 showContent "wf2-4"
+    click E5 showContent "wf2-5"
+    click E6 showContent "wf2-6"
+    style E1 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style R1 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style E2 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style R2 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style E3 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style R3 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style E4 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style E5 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+    style E6 fill:#ede9fe,stroke:#7c3aed,stroke-width:2
+</pre>
+    </div>
+
+    <h3><i data-lucide="bell-ring"></i> 3c. Appointment Reminders (DRM)</h3>
+    <div class="chart-container">
+        <pre class="mermaid">
+flowchart TD
+    BOOK["Customer Books Call"] --> W0["Wait 5 min"]
+    W0 --> EM1["✉️📱💬 Booking Confirmation"]
+    EM1 --> W1["Wait until 1 Day Before"]
+    W1 --> EM2["✉️💬 Tomorrow Reminder"]
+    EM2 --> W2["Wait until 30 Min Before"]
+    W2 --> EM3["✉️📱💬 Final Reminder"]
+    click EM1 showContent "wf3-1"
+    click EM2 showContent "wf3-2"
+    click EM3 showContent "wf3-3"
+    style EM1 fill:#dbeafe,stroke:#2563eb,stroke-width:2
+    style EM2 fill:#dbeafe,stroke:#2563eb,stroke-width:2
+    style EM3 fill:#dbeafe,stroke:#2563eb,stroke-width:2
+</pre>
+    </div>
+
+
+    <!-- ======== SECTION 4: EDITABLE CONTENT ======== -->
+    <h2 id="s4"><i data-lucide="file-edit"></i> 4. Workflow Content <button onclick="downloadContent()" class="dl-btn" title="Download updated content as HTML"><i data-lucide="download"></i> Download</button></h2>
+
+    <div class="alert alert-info">
+        <i data-lucide="info"></i>
+        <div><strong>Click any card</strong> to edit its content in a modal. Changes are kept in-page. Use the <strong>Download</strong> button to export all content (with your edits) as an HTML file you can share.</div>
+    </div>
+
+    <!-- WF1: Form Submitted Follow Up -->
+    <h3 id="wf-followup"><i data-lucide="user-plus"></i> 3a Content — Form Submitted Follow Up</h3>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf1-1">
+        <div class="card-header">
+            <span class="badge badge-internal"><i data-lucide="bell"></i> Internal</span>
+            <span class="step-name">Internal Notification to Dan</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">New Dan Roberts Marketing Call Booked</span></div>
+        <div class="field"><span class="field-label">To:</span> <span class="field-value">daniel.roberts1018@gmail.com</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">{{contact.name}}
+{{contact.email}}
+{{contact.phone}}
+{{contact.what_is_your_business_name}}
+Website - {{contact.what_is_your_website_url}}
+When looking to start scaling? - {{contact.when_are_you_looking_to_start_scaling_with_google_ads}}
+Decision-maker? - {{contact.are_you_the_decision_maker_for_marketing_budgets}}
+Monthly revenue? - {{contact.what_is_your_current_average_monthly_revenue}}
+Running Google Ads? - {{contact.are_you_currently_running_google_ads}}
+Monthly ad spend? - {{contact.if_yes_what_is_your_average_monthly_ad_spend}}
+Worked with agency? - {{contact.have_you_worked_with_an_agency_before}}</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf1-2">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="step-name">Confirmation Email</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">You're in, {{contact.first_name}} — here's what happens next</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}},
+
+Your Discovery Session is booked 🎉
+
+We'll share our exact scaling strategies that have enabled us to scale brands just like yours consistently. We will also give you a full marketing audit to see where the leaks are too.
+
+Excited to dive in,
+
+— Danny</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf1-3">
+        <div class="card-header">
+            <span class="badge badge-sms"><i data-lucide="smartphone"></i> SMS</span>
+            <span class="step-name">Confirmation SMS</span>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}}, Dan here just messaging to say your Discovery Session is booked 🎉
+
+We'll share our exact scaling strategies that have enabled us to scale brands just like yours consistently. We will also give you a full marketing audit to see where the leaks are too.
+
+Excited to dive in,</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf1-4">
+        <div class="card-header">
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WhatsApp</span>
+            <span class="step-name">Confirmation WhatsApp</span>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}},
+
+Your Discovery Session is booked 🎉
+
+We'll share our exact scaling strategies that have enabled us to scale brands just like yours consistently. We will also give you a full marketing audit to see where the leaks are too.
+
+Excited to dive in,
+
+— Danny</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf1-5">
+        <div class="card-header">
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WhatsApp</span>
+            <span class="step-name">Follow-up WhatsApp (Video Testimonial)</span>
+        </div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}},
+
+Most agencies talk. We prefer to show.
+
+We will reveal our exact systems and strategies that have scaled brands over the last 10 years. We will also give you a full marketing audit to see where the leaks are too.
+
+Heres a video from one of our current clients with some advice directly for you. https://youtube.com/shorts/BTCcSWz5OYI
+
+— Danny</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf1-6">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="step-name">Follow-up Email (Video) — all branches</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">Before your session — watch this</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}},
+
+Most agencies talk. We prefer to show.
+
+We will reveal our exact systems and strategies that have scaled brands over the last 10 years. We will also give you a full marketing audit to see where the leaks are too.
+
+Heres a video from one of our current clients with some advice directly for you. https://youtube.com/shorts/BTCcSWz5OYI
+
+— Danny</div>
+    </div>
+
+    <!-- WF2: Case Study Drip -->
+    <h3 id="wf-drip"><i data-lucide="mails"></i> 3b Content — Case Study Email Drip (Templates)</h3>
+    <div class="alert alert-warning"><i data-lucide="alert-triangle"></i><div><strong>Template-based:</strong> Body content stored in GHL Email Templates. From: Danny &lt;Dan@danrobertsmarketing.co.uk&gt;</div></div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-1">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 1 — Candles by Luma</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">How we increased Candles By Luma's revenue by 223% in 4 months</span></div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i data-lucide="paperclip"></i> Case-Study-Candles-by-Luma.pdf</span></div>
+        <div class="body-content" data-field="body">[Content in GHL Email Template — edit in Marketing → Templates]</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-1b">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 1 — Candles by Luma (Resend)</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">We boosted this brands revenue by 223% in just 4 months, heres how.</span></div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-2">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 2 — Larosa Jewellery</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">Here's how we boosted his jewellery brands revenue by 194%.</span></div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i data-lucide="paperclip"></i> Case-Study-Larosa-Jewellery.pdf</span></div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-2b">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 2 — Larosa Jewellery (Resend)</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">Jewellery brand's revenue doubled in 8 months, heres how we did it.</span></div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-3">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 3 — Nest Pets</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">From £64,100 -> £129,000 in less than 4 months, here's how we did it.</span></div>
+        <div class="field"><span class="field-label">Attachment:</span> <span class="attachment"><i data-lucide="paperclip"></i> Case-Study-Nest-Pets.pdf</span></div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-3b">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 3 — Nest Pets (Resend)</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">We boosted this pet brands revenue by 98% in less than 3 months, heres how.</span></div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-4">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 4 — Universal Framework</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">Doubling brands revenue whilst reducing acquisition costs, here's how.</span></div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-5">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 5 — What Holds Google Ads Back</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">What Usually Holds Google Ads Back (and How We Fix It Consistently)</span></div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf2-6">
+        <div class="card-header"><span class="badge badge-template"><i data-lucide="file-text"></i> Template</span><span class="step-name">Email 6 — Strategy Session CTA</span></div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">Let's Map Out Your Growth Strategy</span></div>
+    </div>
+
+    <!-- WF3: Appointment Reminders -->
+    <h3 id="wf-reminders"><i data-lucide="bell-ring"></i> 3c Content — Appointment Reminders</h3>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf3-1">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="badge badge-sms"><i data-lucide="smartphone"></i> SMS</span>
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WA</span>
+            <span class="step-name">Booking Confirmation (all channels identical)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">DRM - Booked Call, video inside for you</span></div>
+        <div class="field"><span class="field-label">Timing:</span> <span class="field-value">5 min after booking</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}},
+
+I recorded this video for you ahead of our call
+
+https://streamable.com/qttd6v
+
+Expect a call from either +44 7438 241646 or
++44 7533 474640. Save these numbers so you don't miss it.
+
+Looking forward to chatting,
+
+Danny</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf3-2">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WA</span>
+            <span class="step-name">1-Day-Before Reminder</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">Our session is tomorrow</span></div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}},
+
+Your Discovery Session is tomorrow, I am looking forward to getting to know your business and to see if we can help!
+
+Here is the link to the meeting - {{appointment.meeting_location}}
+
+To make the most of our time, try to be in a quiet place with good WIFI.
+
+See you tomorrow,
+
+Danny</div>
+    </div>
+
+    <div class="content-card" onclick="openModal(this)" data-id="wf3-3">
+        <div class="card-header">
+            <span class="badge badge-email"><i data-lucide="mail"></i> Email</span>
+            <span class="badge badge-sms"><i data-lucide="smartphone"></i> SMS</span>
+            <span class="badge badge-whatsapp"><i data-lucide="message-circle"></i> WA</span>
+            <span class="step-name">30-Min Reminder (all channels)</span>
+        </div>
+        <div class="field"><span class="field-label">Subject:</span> <span class="field-value" data-field="subject">{{contact.first_name}}, your session starts in 1 hour</span></div>
+        <div class="alert alert-warning" style="margin:.4rem 0"><i data-lucide="alert-triangle"></i><div><strong>Typo:</strong> "ahed" should be "ahead". Subject says "1 hour" but fires at 30 min.</div></div>
+        <div class="body-label">Body</div>
+        <div class="body-content" data-field="body">Hey {{contact.first_name}},
+
+In 30 mins, we go live.
+
+I recorded this video for you ahed of our call
+
+https://streamable.com/wb6bj8
+
+Here is the link to the meeting - {{appointment.meeting_location}}
+
+Danny</div>
+    </div>
+
+
+    <!-- ======== SECTION 5 ======== -->
+    <h2 id="s5"><i data-lucide="kanban"></i> 5. Pipeline Inventory & Audit</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Pipeline</th>
+                <th>Stages</th>
+                <th>Last Updated</th>
+                <th>Workflows</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2023 Client Pipeline</td>
+                <td>13</td>
+                <td>Nov 2023</td>
+                <td>None</td>
+                <td><span class="badge badge-yellow">Legacy — 74 stale opps</span></td>
+            </tr>
+            <tr>
+                <td><strong>DRM 2025 - Lead</strong></td>
+                <td>10</td>
+                <td>Dec 2025</td>
+                <td>Form Submitted, Email Flow</td>
+                <td><span class="badge badge-green">Active</span></td>
+            </tr>
+            <tr>
+                <td><strong>DRM 2026 Clients</strong></td>
+                <td>5</td>
+                <td>Feb 2026</td>
+                <td>None (manual?)</td>
+                <td><span class="badge badge-yellow">No automation</span></td>
+            </tr>
+            <tr>
+                <td>DRM FB Ads</td>
+                <td>6</td>
+                <td>Sep 2023</td>
+                <td>None</td>
+                <td><span class="badge badge-red">Legacy</span></td>
+            </tr>
+            <tr>
+                <td>DRM Graphic Design</td>
+                <td>9</td>
+                <td>Sep 2023</td>
+                <td>None</td>
+                <td><span class="badge badge-red">Legacy</span></td>
+            </tr>
+            <tr>
+                <td>DRM PPC</td>
+                <td>6</td>
+                <td>Sep 2023</td>
+                <td>None</td>
+                <td><span class="badge badge-red">Legacy</span></td>
+            </tr>
+            <tr>
+                <td>DRM SEO</td>
+                <td>14</td>
+                <td>Sep 2023</td>
+                <td>None</td>
+                <td><span class="badge badge-red">Legacy</span></td>
+            </tr>
+            <tr>
+                <td>DRM SEO Commercial</td>
+                <td>5</td>
+                <td>Sep 2023</td>
+                <td>None</td>
+                <td><span class="badge badge-red">Legacy</span></td>
+            </tr>
+            <tr>
+                <td>DRM Workshops</td>
+                <td>5</td>
+                <td>Sep 2023</td>
+                <td>None</td>
+                <td><span class="badge badge-red">Legacy</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-warning">
+        <i data-lucide="alert-triangle"></i>
+        <div><strong>Warning:</strong> 6 of 9 pipelines haven't been updated since September 2023 and have no workflow
+            automation. These are legacy service-line pipelines cluttering the account.</div>
+    </div>
+
+    <div class="alert alert-danger">
+        <i data-lucide="circle-alert"></i>
+        <div><strong>Critical:</strong> All visible opportunities have <strong>$0.00 monetary value</strong> —
+            opportunity values are not being tracked, which eliminates any revenue pipeline reporting capability.</div>
+    </div>
+
+    <!-- ======== SECTION 6 ======== -->
+    <h2 id="s6"><i data-lucide="bug"></i> 6. Issues & Gaps Identified</h2>
+
+    <h3><i data-lucide="circle-x"></i> Critical Issues</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Issue</th>
+                <th>Impact</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td><strong><code>{{user.name}}</code> used instead of <code>{{contact.name}}</code></strong> for
+                    opportunity name</td>
+                <td>Opportunity names show the GHL user's name, not the lead's — pipeline board useless</td>
+                <td>FB Lead v1 & v2</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><strong>$0 monetary values</strong> on all opportunities</td>
+                <td>Zero revenue tracking, no forecasting, no ROI measurement</td>
+                <td>All pipelines</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><strong>Two near-identical FB Lead workflows</strong></td>
+                <td>Fragmented logic — changes must be made twice</td>
+                <td>FB Lead v1 & v2</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3><i data-lucide="alert-triangle"></i> Moderate Issues</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Issue</th>
+                <th>Impact</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>4</td>
+                <td><strong>No appointment no-show handling</strong></td>
+                <td>Missed leads go cold with no follow-up</td>
+                <td>DRM Appt WF</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td><strong>No opportunity stage updates</strong> from workflows</td>
+                <td>Opportunities created but never progress through stages</td>
+                <td>All workflows</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td><strong>6 legacy pipelines</strong> (Sep 2023)</td>
+                <td>UI clutter, possible confusion</td>
+                <td>Pipeline list</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td><strong>"ahed" typo</strong> in multiple messages</td>
+                <td>Unprofessional appearance</td>
+                <td>DRM Appt Reminders</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ======== SECTION 7 ======== -->
+    <h2 id="s7"><i data-lucide="lightbulb"></i> 7. Improvement Recommendations</h2>
+
+    <h3><i data-lucide="minimize-2"></i> A. Simplification</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Recommendation</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>A1. Merge FB Lead Workflows</strong></td>
+                <td>Combine v1 and v2 into one workflow with <code>is-any-of</code> multi-form trigger. Same pipeline,
+                    same action — one workflow.</td>
+            </tr>
+            <tr>
+                <td><strong>A2. Archive 6 Legacy Pipelines</strong></td>
+                <td>Archive (don't delete) FB Ads, Graphic Design, PPC, SEO, SEO Commercial, Workshops pipelines. Keep
+                    DRM 2025-Lead and DRM 2026 Clients.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3><i data-lucide="target"></i> B. Accuracy & Data Quality</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Recommendation</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>B1. Fix <code>{{user.name}}</code> Bug</strong></td>
+                <td>Change to <code>{{contact.name}}</code> in both FB Lead workflows immediately.</td>
+            </tr>
+            <tr>
+                <td><strong>B2. Add Monetary Values</strong></td>
+                <td>Set default opportunity values: DRM ~£2,500–5,000/month retainer.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3><i data-lucide="bar-chart-3"></i> C. Reporting Improvements</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Recommendation</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>C1. Opportunity Stage Automation</strong></td>
+                <td>Auto-move opportunities: New Lead → Engaged → Appointment Scheduled → Meeting Completed → Won/Lost
+                </td>
+            </tr>
+            <tr>
+                <td><strong>C2. Lead Source Tags</strong></td>
+                <td>Tag contacts: <code>source:facebook-lead</code>, <code>source:google-ads-form</code>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>C3. Master Reporting Pipeline</strong></td>
+                <td>Create a single 5-stage pipeline: New → Contacted → Booked → Met → Won/Lost</td>
+            </tr>
+            <tr>
+                <td><strong>C4. Email Engagement Tracking</strong></td>
+                <td>Add custom fields: <code>email_sequence_started</code>, <code>emails_opened_count</code>,
+                    <code>last_email_opened</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3><i data-lucide="bell"></i> D. Notification Improvements</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Recommendation</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>D1. No-Show Handling</strong></td>
+                <td>Add: Internal notif → "We missed you" SMS/email → Opp stage "No Show" → Re-engagement sequence</td>
+            </tr>
+            <tr>
+                <td><strong>D2. Consolidate Notifications</strong></td>
+                <td>Standardize recipients. Consider Slack/Teams channel for all lead notifications.</td>
+            </tr>
+            <tr>
+                <td><strong>D3. Stage Change Notifications</strong></td>
+                <td>Notify on: New lead, Appointment booked, Lead gone cold (14 days), Deal Won</td>
+            </tr>
+            <tr>
+                <td><strong>D4. Daily/Weekly Summary</strong></td>
+                <td>Scheduled workflow sending digest: new leads, appointments, pipeline breakdown</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ======== SECTION 8 ======== -->
+    <h2 id="s8"><i data-lucide="list-checks"></i> 8. Recommended Next Steps</h2>
+
+    <div class="steps-grid">
+
+        <div class="step-card">
+            <div class="step-header immediate"><i data-lucide="zap"></i> Immediate (This Week)</div>
+            <h4>Quick Fixes</h4>
+            <ul>
+                <li>Fix <code>{{user.name}}</code> → <code>{{contact.name}}</code> in FB Lead workflows</li>
+                <li>Fix "ahed" typo in DRM Appointment Reminders</li>
+                <li>Merge FB Lead v1 and v2 into one workflow</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <div class="step-header short"><i data-lucide="bar-chart-3"></i> Short-term (Next 2 Weeks)</div>
+            <h4>Data & Tracking</h4>
+            <ul>
+                <li>Add monetary values to opportunity creation</li>
+                <li>Add opportunity stage transition workflows</li>
+                <li>Build no-show handling workflow</li>
+                <li>Implement lead source tagging</li>
+            </ul>
+        </div>
+
+        <div class="step-card">
+            <div class="step-header medium"><i data-lucide="wrench"></i> Medium-term (Next Month)</div>
+            <h4>Optimization</h4>
+            <ul>
+                <li>Archive 6 legacy pipelines</li>
+                <li>Create master reporting pipeline</li>
+                <li>Set up daily digest notification workflow</li>
+                <li>Audit & consolidate sender email addresses</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <h3><i data-lucide="clipboard-list"></i> Additional GHL Info Needed for Deeper Audit</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Section</th>
+                <th>What's Needed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Calendars</td>
+                <td>List of all calendars and their configurations</td>
+            </tr>
+            <tr>
+                <td>Forms & Surveys</td>
+                <td>All forms/surveys — which are active vs. inactive</td>
+            </tr>
+            <tr>
+                <td>Smart Lists</td>
+                <td>Any smart lists used for segmentation</td>
+            </tr>
+            <tr>
+                <td>Tags</td>
+                <td>Full list of tags in use across contacts</td>
+            </tr>
+            <tr>
+                <td>Contacts</td>
+                <td>Total count, breakdown by source</td>
+            </tr>
+            <tr>
+                <td>Custom Fields</td>
+                <td>Contact & opportunity custom fields</td>
+            </tr>
+            <tr>
+                <td>Other Workflows</td>
+                <td>Are there workflows not included in this export?</td>
+            </tr>
+            <tr>
+                <td>Trigger Links</td>
+                <td>Any trigger links in use</td>
+            </tr>
+            <tr>
+                <td>Chat Widget</td>
+                <td>Any chat-based lead capture configured</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert alert-success">
+        <i data-lucide="sparkles"></i>
+        <div><strong>Quick Win:</strong> The single highest-impact change is fixing the <code>{{user.name}}</code> bug
+            and adding monetary values to opportunities. Together, these make the pipeline board actually usable as a
+            sales management tool.</div>
+    </div>
+
+    <script>
+        // Global function for Mermaid click callbacks — must exist before mermaid renders
+        function showContent(cardId) {
+            // If it's a section anchor (like wf-drip), scroll to the heading
+            const section = document.getElementById(cardId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            // Otherwise find the content card and open its modal
+            const card = document.querySelector('[data-id="' + cardId + '"]');
+            if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => openModal(card), 400);
+            }
+        }
+
+        function getTheme() {
+            return document.documentElement.getAttribute('data-theme');
+        }
+
+        function toggleTheme() {
+            const current = getTheme();
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateToggleIcon(next);
+            reinitMermaid(next);
+        }
+
+        function updateToggleIcon(theme) {
+            const btn = document.getElementById('themeBtn');
+            if (theme === 'dark') {
+                btn.innerHTML = '<i data-lucide="sun"></i>';
+            } else {
+                btn.innerHTML = '<i data-lucide="moon"></i>';
+            }
+            lucide.createIcons({ nodes: [btn] });
+        }
+
+        function reinitMermaid(theme) {
+            const mermaidTheme = theme === 'dark' ? 'dark' : 'default';
+            mermaid.initialize({
+                securityLevel: 'loose',
+                startOnLoad: false,
+                theme: mermaidTheme,
+                themeVariables: theme === 'dark' ? {
+                    primaryColor: '#3b82f6',
+                    primaryTextColor: '#e2e4ed',
+                    primaryBorderColor: '#2d3148',
+                    lineColor: '#6366f1',
+                    secondaryColor: '#232738',
+                    tertiaryColor: '#1a1d28',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '13px'
+                } : {
+                    primaryColor: '#dbeafe',
+                    primaryTextColor: '#1e293b',
+                    primaryBorderColor: '#bfdbfe',
+                    lineColor: '#6366f1',
+                    secondaryColor: '#f0f2f7',
+                    tertiaryColor: '#ffffff',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '13px'
+                },
+                flowchart: { curve: 'basis', padding: 20, htmlLabels: true }
+            });
+
+            document.querySelectorAll('.mermaid').forEach(async (el) => {
+                const code = el.getAttribute('data-original') || el.textContent;
+                el.setAttribute('data-original', code);
+                el.removeAttribute('data-processed');
+                el.innerHTML = code;
+                try {
+                    const { svg } = await mermaid.render('mermaid-' + Math.random().toString(36).substr(2, 9), code);
+                    el.innerHTML = svg;
+                } catch (e) { /* ignore render errors during transition */ }
+            });
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+            updateToggleIcon(saved);
+
+            const mermaidTheme = saved === 'dark' ? 'dark' : 'default';
+            mermaid.initialize({
+                securityLevel: 'loose',
+                startOnLoad: true,
+                theme: mermaidTheme,
+                themeVariables: saved === 'dark' ? {
+                    primaryColor: '#3b82f6',
+                    primaryTextColor: '#e2e4ed',
+                    primaryBorderColor: '#2d3148',
+                    lineColor: '#6366f1',
+                    secondaryColor: '#232738',
+                    tertiaryColor: '#1a1d28',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '13px'
+                } : {
+                    primaryColor: '#dbeafe',
+                    primaryTextColor: '#1e293b',
+                    primaryBorderColor: '#bfdbfe',
+                    lineColor: '#6366f1',
+                    secondaryColor: '#f0f2f7',
+                    tertiaryColor: '#ffffff',
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '13px'
+                },
+                flowchart: { curve: 'basis', padding: 20, htmlLabels: true }
+            });
+
+            lucide.createIcons();
+        });
+    </script>
+
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeModal()">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 id="modalTitle">Edit Content</h3>
+            <div id="modalBadges"></div>
+            <div id="modalSubjectWrap">
+                <label>Subject Line</label>
+                <input type="text" id="modalSubject">
+            </div>
+            <label>Body</label>
+            <textarea id="modalBody"></textarea>
+            <button class="modal-save" onclick="saveModal()"><i data-lucide="check" style="width:14px;height:14px;display:inline;vertical-align:middle"></i> Save Changes</button>
+        </div>
+    </div>
+
+    <script>
+        let currentCard = null;
+
+        function openModal(card) {
+            currentCard = card;
+            const title = card.querySelector('.step-name')?.textContent || 'Edit';
+            const badges = card.querySelector('.card-header')?.innerHTML || '';
+            const subjectEl = card.querySelector('[data-field="subject"]');
+            const bodyEl = card.querySelector('[data-field="body"]');
+
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBadges').innerHTML = badges;
+
+            if (subjectEl) {
+                document.getElementById('modalSubjectWrap').style.display = 'block';
+                document.getElementById('modalSubject').value = subjectEl.textContent;
+            } else {
+                document.getElementById('modalSubjectWrap').style.display = 'none';
+            }
+
+            document.getElementById('modalBody').value = bodyEl ? bodyEl.textContent : '';
+            document.getElementById('editModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons({ nodes: [document.getElementById('editModal')] });
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('active');
+            document.body.style.overflow = '';
+            currentCard = null;
+        }
+
+        function saveModal() {
+            if (!currentCard) return;
+            const subjectEl = currentCard.querySelector('[data-field="subject"]');
+            const bodyEl = currentCard.querySelector('[data-field="body"]');
+            if (subjectEl) subjectEl.textContent = document.getElementById('modalSubject').value;
+            if (bodyEl) bodyEl.textContent = document.getElementById('modalBody').value;
+
+            // Mark as edited
+            if (!currentCard.querySelector('.edited-badge')) {
+                const badge = document.createElement('span');
+                badge.className = 'edited-badge';
+                badge.textContent = 'EDITED';
+                currentCard.querySelector('.step-name')?.appendChild(badge);
+            }
+            currentCard.style.borderColor = 'var(--accent-green)';
+            closeModal();
+        }
+
+        function downloadContent() {
+            const cards = document.querySelectorAll('.content-card[data-id]');
+            let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>DRM Workflow Content - Updated</title>';
+            html += '<style>body{font-family:Inter,sans-serif;max-width:800px;margin:2rem auto;padding:0 1.5rem;color:#1a1d28;line-height:1.7}';
+            html += 'h1{font-size:1.6rem;color:#2563eb}h2{color:#7c3aed;border-bottom:2px solid #e2e5f0;padding-bottom:.3rem;margin-top:2rem}';
+            html += '.card{background:#f8f9fc;border:1px solid #e2e5f0;border-radius:10px;padding:1rem 1.2rem;margin:.6rem 0}';
+            html += '.badge{display:inline-block;padding:.1rem .4rem;border-radius:4px;font-size:.75rem;font-weight:600;margin-right:.3rem}';
+            html += '.badge-email{background:#dbeafe;color:#2563eb}.badge-sms{background:#dcfce7;color:#16a34a}';
+            html += '.badge-wa{background:#dcfce7;color:#16a34a}.badge-int{background:#ffedd5;color:#ea580c}';
+            html += '.badge-tpl{background:#ede9fe;color:#7c3aed}.badge-edited{background:#dcfce7;color:#16a34a}';
+            html += '.step{font-weight:600;font-size:.9rem;margin:.3rem 0}.field{font-size:.85rem;margin:.2rem 0;color:#5b6078}';
+            html += '.body{background:#fff;border:1px solid #e2e5f0;border-radius:6px;padding:.8rem;font-size:.85rem;white-space:pre-wrap;margin-top:.3rem}';
+            html += '</style></head><body>';
+            html += '<h1>DRM 2025 — Workflow Content</h1>';
+            html += '<p style="color:#5b6078">Updated: ' + new Date().toLocaleDateString() + '</p>';
+
+            let currentGroup = '';
+            cards.forEach(card => {
+                const h3 = card.previousElementSibling;
+                let group = '';
+                let el = card.previousElementSibling;
+                while (el) {
+                    if (el.tagName === 'H3') { group = el.textContent; break; }
+                    el = el.previousElementSibling;
+                }
+                if (group && group !== currentGroup) {
+                    currentGroup = group;
+                    html += '<h2>' + group.replace(/[^\w\s—–-]/g, '').trim() + '</h2>';
+                }
+
+                const step = card.querySelector('.step-name')?.childNodes[0]?.textContent || '';
+                const badges = card.querySelectorAll('.badge');
+                const subj = card.querySelector('[data-field="subject"]')?.textContent || '';
+                const body = card.querySelector('[data-field="body"]')?.textContent || '';
+                const edited = card.querySelector('.edited-badge') ? ' <span class="badge badge-edited">EDITED</span>' : '';
+
+                html += '<div class="card">';
+                badges.forEach(b => {
+                    const t = b.textContent.trim();
+                    let cls = 'badge-email';
+                    if (t.includes('SMS')) cls = 'badge-sms';
+                    else if (t.includes('WA') || t.includes('WhatsApp')) cls = 'badge-wa';
+                    else if (t.includes('Internal')) cls = 'badge-int';
+                    else if (t.includes('Template')) cls = 'badge-tpl';
+                    html += '<span class="badge ' + cls + '">' + t + '</span>';
+                });
+                html += '<div class="step">' + step + edited + '</div>';
+                if (subj) html += '<div class="field"><b>Subject:</b> ' + subj + '</div>';
+                if (body) html += '<div class="body">' + body.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>';
+                html += '</div>';
+            });
+
+            html += '</body></html>';
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'drm-workflow-content-updated.html';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    </script>
+
+</body>
+
+</html>
